@@ -1,0 +1,120 @@
+.table-wrap {
+    overflow-x: auto;
+}
+
+.ll-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid #f0d8f3;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.ll-table thead th {
+    padding: .75rem .9rem;
+    text-align: left;
+    background: #fdefff;
+    color: #45004f;
+    font-weight: 700;
+    border-bottom: 1px solid #f0d8f3;
+}
+
+.ll-table tbody td {
+    padding: .7rem .9rem;
+    border-bottom: 1px solid #f7e6fa;
+}
+
+.ll-table tbody tr:nth-child(even) {
+    background: #fff7fe;
+}
+
+.ta-right {
+    text-align: right;
+}
+
+.ta-center {
+    text-align: center;
+}
+
+.muted {
+    color: #7a5b86;
+}
+
+/* Пил-бутони за действия */
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .42rem .75rem;
+    border-radius: 999px;
+    font-size: .95rem;
+    border: 1px solid transparent;
+    text-decoration: none;
+    transition: transform .08s ease, box-shadow .15s ease;
+    margin-left: .35rem;
+}
+
+.btn-pill:hover {
+    transform: translateY(-1px);
+}
+
+.btn-approve {
+    background: #e7fbef;
+    border-color: #b7e8cc;
+    color: #11633a;
+}
+
+.btn-reject {
+    background: #ffe9ec;
+    border-color: #f5b7bf;
+    color: #8b1a2b;
+}
+
+/* Акордеонът в профила – „балончета“ в светло розово */
+.accordion--profile .acc-item {
+    border: 1px solid var(--pink-200);
+    background: var(--pink-50);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.accordion--profile .acc-item+.acc-item {
+    margin-top: 14px;
+}
+
+/* Глава на акордеона – по-голяма и центрирана */
+.accordion--profile .acc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 16px;
+    background: var(--pink-100);
+    color: var(--violet);
+    font-weight: 800;
+    user-select: none;
+}
+
+.accordion--profile .acc-summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion--profile .acc-title {
+    font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+}
+
+/* Центрирано заглавие на страницата */
+.page-title.center {
+    text-align: center;
+}
+
+/* Цветове (fallback, ако вече имаш променливи – остави твоите) */
+:root {
+    --violet: #3b0054;
+    --pink-50: #fff3fa;
+    --pink-100: #ffe6f7;
+    --pink-150: #fde9f3;
+    --pink-200: #f6c8ea;
+    --shadow: 0 6px 18px rgba(219, 119, 208, .18);
+}

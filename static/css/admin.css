@@ -1,0 +1,207 @@
+:root {
+    --violet: #5a007a;
+    --muted: #6b6b6b;
+
+    --pink-50: #fff3fb;
+    /* много светло розово за карти */
+    --pink-100: #ffe7f6;
+    --pink-200: #ffd6ef;
+    /* по-тъмно розово за одобрени */
+    --pink-border: #e8c8f5;
+
+    --grey-badge-bg: #ececec;
+    --grey-badge-fg: #3c3c3c;
+    --green-badge-bg: #d9f4e5;
+    --green-badge-fg: #0b6b3a;
+    --red-badge-bg: #ffe0e0;
+    --red-badge-fg: #8a1f1f;
+}
+
+/* заглавие */
+.page-title.center {
+    text-align: center;
+}
+
+/* карти / секции */
+.card {
+    background: var(--pink-50);
+    border: 1px solid var(--pink-border);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin: 18px 0;
+}
+
+.card--softpink {
+    background: var(--pink-50);
+}
+
+.section-title {
+    margin: 0 0 10px;
+    color: var(--violet);
+    font-weight: 800;
+}
+
+/* бейджове със статистики */
+.badges {
+    display: flex;
+    gap: .5rem;
+    margin-top: .6rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-block;
+    font-weight: 700;
+    padding: .35rem .65rem;
+    border-radius: 999px;
+    font-size: .95rem;
+}
+
+.badge--pending {
+    background: var(--grey-badge-bg);
+    color: var(--grey-badge-fg);
+}
+
+.badge--approved {
+    background: var(--green-badge-bg);
+    color: var(--green-badge-fg);
+}
+
+.badge--rejected {
+    background: var(--red-badge-bg);
+    color: var(--red-badge-fg);
+}
+
+/* филтри: бутонът вляво */
+.filters {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.flex-spacer {
+    flex: 1;
+}
+
+.input,
+.select {
+    padding: .5rem .6rem;
+    border: 1px solid var(--pink-border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+/* акордеон */
+.accordion {
+    display: grid;
+    gap: .6rem;
+}
+
+.acc-item {
+    border: 1px solid var(--pink-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.acc-item>summary {
+    cursor: pointer;
+    list-style: none;
+    padding: .75rem 1rem;
+    font-weight: 700;
+    color: var(--violet);
+    background: var(--pink-100);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.acc-item[open]>summary {
+    border-bottom: 1px solid var(--pink-border);
+}
+
+.acc-item .acc-body {
+    padding: .8rem 1rem;
+    background: #fff;
+}
+
+/* цветове по секции/статус */
+.acc-item.user.approved>summary {
+    background: var(--pink-200);
+}
+
+/* по-тъмно розово */
+.acc-item.user.pending>summary {
+    background: #f0eef3;
+}
+
+/* сиво за чакащи */
+.acc-item.user.rejected>summary {
+    background: #ffe8e8;
+}
+
+/* червено за отхвърлени */
+
+/* бутони */
+.btn {
+    display: inline-block;
+    border: 1px solid var(--pink-border);
+    padding: .5rem .9rem;
+    border-radius: 12px;
+    text-decoration: none;
+    background: #fff;
+    color: var(--violet);
+    font-weight: 700;
+}
+
+.btn:hover {
+    filter: brightness(0.98);
+}
+
+.btn-approve {
+    background: #e6ffef;
+    border-color: #b4ebc9;
+    color: #0b6b3a;
+}
+
+.btn-danger {
+    background: #ffe9ea;
+    border-color: #ffc5c9;
+    color: #8a1f1f;
+}
+
+.btn-outline {
+    background: #fff;
+}
+
+.btn-pill {
+    background: #ffe0ef;
+    border-color: #f4bfdc;
+}
+
+/* помощни */
+.muted {
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.row-actions {
+    display: flex;
+    gap: .5rem;
+    margin-top: .6rem;
+}
+
+.user-info {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.user-info li {
+    margin: .15rem 0;
+}

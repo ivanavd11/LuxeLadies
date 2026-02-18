@@ -1,0 +1,171 @@
+:root {
+    --ll-bg: #fff0f5;
+    --ll-text: #4b004b;
+    --ll-accent: #cc99e6;
+    --ll-accent-2: #e6c6f2;
+    --ll-button: #ffb6c1;
+    --ll-muted: #7a4a7a;
+    --ll-card-bg: #ffffff;
+}
+
+/* Карта/контейнер */
+.card {
+    background: var(--ll-card-bg);
+    border: 1px solid var(--ll-accent-2);
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+/* Унифицирани бутони */
+.btn {
+    display: inline-block;
+    padding: .55rem 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--ll-accent);
+    background: var(--ll-button);
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    filter: brightness(.97);
+}
+
+.btn-secondary {
+    background: #fff;
+    color: var(--ll-text);
+    border: 1px solid var(--ll-accent);
+}
+
+.btn-small {
+    padding: .4rem .7rem;
+    font-size: .95rem;
+}
+
+/* Формови елементи */
+.form-vertical {
+    display: grid;
+    gap: .9rem;
+    max-width: 640px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: .25rem;
+    font-weight: 700;
+    color: #3b0054;
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="number"],
+.form-row input[type="password"],
+.form-row select,
+.form-row textarea {
+    width: 100%;
+    padding: .5rem .6rem;
+    border: 1px solid var(--ll-accent-2);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.form-row ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: .45rem;
+}
+
+.form-row ul li label {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .45rem .6rem;
+    border: 1px solid var(--ll-accent-2);
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+}
+
+.form-row ul li input[type="radio"],
+.form-row ul li input[type="checkbox"] {
+    margin: 0;
+}
+
+/* Акордеон (details/summary) – еднакъв навсякъде */
+.accordion {
+    display: grid;
+    gap: .8rem;
+}
+
+.acc-item {
+    border: 1px solid var(--ll-accent-2);
+    border-radius: 14px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.acc-item>summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .8rem;
+    padding: .8rem 1rem;
+    font-weight: 700;
+    color: var(--ll-text);
+}
+
+.acc-item[open]>summary {
+    border-bottom: 1px solid var(--ll-accent-2);
+}
+
+.acc-body {
+    padding: .9rem 1rem;
+}
+
+/* Малки помощни */
+.page-title {
+    margin: .4rem 0 1rem;
+}
+
+.muted {
+    color: var(--ll-muted);
+    font-size: .95rem;
+}
+
+.italic-title {
+    font-style: italic;
+}
+
+.pre-line {
+    white-space: pre-line;
+}
+
+.avatar-square {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid #e7c7f4;
+    background: #f6ebff;
+    display: block;
+}
+
+.avatar-actions {
+    margin-top: .5rem;
+    display: flex;
+    gap: .5rem;
+}
+
+.sr-file {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
