@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="events-title">Заявката е подадена</h2>
+<p>Благодарим! Заявката ти за участие в „{{ event.title }}“ е изпратена.</p>
+
+<div class="event-buttons" style="margin-top:20px;">
+    <a href="{% url 'event_detail' event.id %}" class="event-button">Назад към събитието</a>
+    <a href="{% url 'all_events' %}" class="event-button">Виж всички събития</a>
+</div>
+{% endblock %}

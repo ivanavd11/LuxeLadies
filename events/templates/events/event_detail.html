@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="event-detail">
+    <h2 class="italic-title">{{ event.title }}</h2>
+
+    {% if event.image %}
+    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="event-detail-image">
+    {% endif %}
+
+    <p><strong>Дата и час:</strong> {{ event.date_time|date:"d.m.Y H:i" }}</p>
+    <p><strong>Град:</strong> {{ event.city }}</p>
+    <p><strong>Точно местоположение:</strong> {{ event.location_details }}</p>
+    <p><strong>Цена:</strong> {{ event.price }} лв.
+        <span>({{ event.price_eur }} €)</span>
+    </p>
+
+    <p><strong>Подходящо за деца:</strong>
+        {% if event.is_kid_friendly %}
+        Да
+        {% else %}
+        Не
+        {% endif %}
+    </p>
+
+    <p><strong>Интереси:</strong>
+        {% for interest in event.interests.all %}
+        {{ interest.name }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+        Няма избрани интереси.
+        {% endfor %}
+    </p>
+
+    <p><strong>Описание:</strong></p>
+    <div class="pre-line" style="margin-bottom:1em;">
+        {{ event.description }}
+    </div>
+
+    <p><strong>Капацитет:</strong> {{ event.capacity }} души</p>
+    <p><strong>Свободни места:</strong> {{ event.free_spots }} души</p>
+
+
+    <div class="event-buttons">
+        {% if is_past %}
+        <button class="event-button" disabled>Събитието е вече минало</button>
+        {% else %}
+        {# --- ТВОЯТ СЪЩЕСТВУВАЩ БЛОК С ЛОГИКА ЗА ЗАПИСВАНЕ --- #}
+        {% if existing_registration %}
+        {% if existing_registration.status == 'approved' %}
+        <button class="event-button" disabled>Вече сте одобрена за участие</button>
+        {% elif existing_registration.status == 'pending' %}
+        <button class="event-button" disabled>Заявката Ви очаква одобрение</button>
+        {% elif existing_registration.status == 'rejected' %}
+        <a href="{% url 'register_for_event' event.id %}" class="event-button">Изпрати нова заявка</a>
+        {% endif %}
+        {% else %}
+        {% if event.free_spots > 0 %}
+        <a href="{% url 'register_for_event' event.id %}" class="event-button">Запиши ме</a>
+        {% else %}
+        <button class="event-button" disabled>Няма свободни места</button>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'events_home' %}" class="event-button">
+    ← Назад
+</a>
+{% endblock %}

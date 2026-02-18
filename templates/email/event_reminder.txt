@@ -1,0 +1,10 @@
+Здравей, {{ recipient_name }}!
+
+Напомняме ти за събитието "{{ event.title }}" – {{ slot_text }}.
+Кога: {{ event.date_time|date:"d.m.Y H:i" }}
+Град: {{ event.city }}{% if event.location_details %}
+/ Място: {{ event.location_details }}{% endif %}{% if event.price %}
+Цена: {{ event.price|floatformat:2 }} лв.{% if event.price_eur %} (~ {{ event.price_eur|floatformat:1 }} €){% endif %}{% endif %}
+
+Очакваме те!
+Екипът на LuxeLadies

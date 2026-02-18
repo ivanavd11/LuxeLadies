@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="color: #e91e63; font-style: italic; font-size: 28px; text-align: center;">
+    Въпросник
+</h2>
+<p style="
+    font-size: 18px;
+    text-align: center;
+    margin: 10px auto 20px auto;
+    max-width: 700px;
+">
+    Здравей, <strong>{{ user.first_name }} {{ request.user.last_name|default:'' }}</strong> 🎀<br>
+    Радваме се, че искаш да се присъединиш към нашето общество! <br>
+    Твоята регистрация беше <strong>одобрена</strong>, и сега те молим да попълниш анкетата, за да можем
+    да подбираме най-подходящите събития за теб!
+</p>
+
+<!-- Розова черта за разделение -->
+<hr style="border: none; border-top: 3px solid #e91e63; width: 60%; margin: 30px auto;">
+
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+        {% for field in form %}
+        {% if field.name != 'has_friend' and field.name != 'friend_name' %}
+        <div class="form-group">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+            <small>{{ field.help_text }}</small>
+            {% endif %}
+            {% for error in field.errors %}
+            <p class="error">{{ error }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Въпрос за приятелка -->
+        <div class="form-group">
+            {{ form.has_friend.label_tag }}
+            {{ form.has_friend }}
+        </div>
+
+        <div class="form-group" id="friend-name-field" style="display: none;">
+            {{ form.friend_name.label_tag }}
+            {{ form.friend_name }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Изпрати</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const hasChildrenYes = document.querySelector('input[name="has_children"][value="True"]');
+        const hasChildrenNo = document.querySelector('input[name="has_children"][value="False"]');
+        const withChildrenField = document.querySelector('.form-group:has([name="wants_events_with_children"])');
+
+        const friendRadios = document.querySelectorAll('input[name="has_friend"]');
+        const friendNameDiv = document.getElementById("friend-name-field");
+
+        // Скрий по подразбиране
+        if (withChildrenField) withChildrenField.style.display = 'none';
+        if (friendNameDiv) friendNameDiv.style.display = 'none';
+
+        function toggleChildren() {
+            if (hasChildrenYes?.checked) {
+                withChildrenField.style.display = 'block';
+            } else {
+                withChildrenField.style.display = 'none';
+            }
+        }
+
+        function toggleFriendName() {
+            const selected = Array.from(friendRadios).find(r => r.checked)?.value;
+            friendNameDiv.style.display = (selected === 'yes') ? 'block' : 'none';
+        }
+
+
+        hasChildrenYes?.addEventListener('change', toggleChildren);
+        hasChildrenNo?.addEventListener('change', toggleChildren);
+        friendRadios.forEach(r => r.addEventListener('change', toggleFriendName));
+
+        toggleChildren();
+        toggleFriendName();
+    });
+</script>
+
+{% endblock %}

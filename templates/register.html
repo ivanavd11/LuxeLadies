@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Регистрация</h2>
+<p>Всяка дама, която иска да се присъедини към LuxeLadies, започва с попълване на форма за регистрация.</p>
+<p>В нея ще трябва да предоставите основни лични данни като две имена, възраст, е-мейл адрес, града, в който живеете в
+    момента, и парола.
+    Задължително трябва да попълните дали учите и в кое учебно заведение и/или работите и местоработата Ви.</p>
+<p>След успешна регистрация ще можете да започнете да използвате приложението и да се запознаете с добри и
+    лъчезарни дами готови за нови приятелства.</p>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Регистрирай се</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const studyingRadios = document.getElementsByName('studies');
+        const studyingField = document.getElementById('id_education_place').parentElement;
+
+        const workingRadios = document.getElementsByName('works');
+        const workField = document.getElementById('id_work_place').parentElement;
+
+
+        function toggleField(radios, field) {
+            const value = Array.from(radios).find(r => r.checked)?.value;
+            if (value === 'yes') {
+                field.style.display = 'block';
+            } else {
+                field.style.display = 'none';
+            }
+        }
+
+        studyingRadios.forEach(r => r.addEventListener('change', () => toggleField(studyingRadios, studyingField)));
+        workingRadios.forEach(r => r.addEventListener('change', () => toggleField(workingRadios, workField)));
+
+        toggleField(studyingRadios, studyingField);
+        toggleField(workingRadios, workField);
+    });
+</script>
+{% endblock %}

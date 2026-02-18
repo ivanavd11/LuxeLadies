@@ -1,0 +1,12 @@
+Здравей, {{ recipient_name }}!
+
+Промените в настройките за имейл известия са запазени:
+- Напомняния за събития: {{ prefs.email_event_reminders|yesno:"ДА,НЕ" }}
+- Одобрена/Отхвърлена заявка: {{ prefs.email_event_status_changes|yesno:"ДА,НЕ" }}
+- Препоръки за събития: {{ prefs.email_recommendations|yesno:"ДА,НЕ" }}
+- Промяна на лични данни: {{ prefs.email_profile_changes|yesno:"ДА,НЕ" }}
+- Промяна на отговори от въпросника: {{ prefs.email_questionnaire_changes|yesno:"ДА,НЕ" }}
+- Новини и предложения: {{ prefs.email_news|yesno:"ДА,НЕ" }}
+
+Поздрави,
+LuxeLadies

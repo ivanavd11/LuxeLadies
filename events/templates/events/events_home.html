@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="event-choice-container">
+    <h2>Избери кои събития искаш да видиш</h2>
+
+    <div class="event-buttons">
+        <a href="{% url 'all_events' %}" class="event-button">Всички събития</a>
+        <a href="{% url 'recommended_events' %}" class="event-button">Най-подходящите събития за теб</a>
+        <a href="{% url 'events_past' %}" class="event-button">Минали събития</a>
+    </div>
+</div>
+{% endblock %}

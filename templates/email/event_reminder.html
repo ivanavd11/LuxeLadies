@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="bg">
+
+<body style="font-family: Arial, sans-serif; color:#222; line-height:1.5;">
+    <p>Здравей, <strong>{{ recipient_name }}</strong>!</p>
+    <p>
+        Напомняме ти за събитието „<strong>{{ event.title }}</strong>“ – {{ slot_text }}.
+    </p>
+    <ul>
+        <li><strong>Кога:</strong> {{ event.date_time|date:"d.m.Y H:i" }}</li>
+        <li><strong>Град:</strong> {{ event.city }}</li>
+        {% if event.location_details %}
+        <li><strong>Място:</strong> {{ event.location_details }}</li>
+        {% endif %}
+        {% if event.price %}
+        <li><strong>Цена:</strong> {{ event.price|floatformat:2 }} лв.{% if event.price_eur %} (~ {{
+            event.price_eur|floatformat:1 }} €){% endif %}</li>
+        {% endif %}
+    </ul>
+    <p>Очакваме те!<br>Екипът на <strong>LuxeLadies</strong></p>
+</body>
+
+</html>

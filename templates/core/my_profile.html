@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title center">Моят профил</h1>
+
+<section class="card">
+    <div class="accordion accordion--profile">
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title"><strong>Лични данни</strong></span></summary>
+            <div class="acc-body">
+                <form method="post" enctype="multipart/form-data" class="form-vertical">
+                    {% csrf_token %}
+
+                    <div class="form-row">
+                        <label for="id_avatar">Снимка</label>
+
+                        {% if request.user.avatar %}
+                        <img class="avatar-square" id="avatar-preview" src="{{ request.user.avatar.url }}" alt="Avatar">
+                        {% else %}
+                        <div class="avatar-square" id="avatar-preview"
+                            style="display:flex;align-items:center;justify-content:center;">
+                            <span class="muted">Няма снимка</span>
+                        </div>
+                        {% endif %}
+
+                        {# скрит file input – ние решаваме кога да кликне #}
+                        <input type="file" id="id_avatar" name="avatar" class="sr-file" accept="image/*">
+
+                        {# скрит флаг за премахване #}
+                        <input type="hidden" id="remove_avatar" name="remove_avatar" value="">
+
+
+                        <div class="avatar-actions">
+                            <button type="button" class="btn btn-apply btn-small" id="btn-change-avatar">Смени</button>
+                            <button type="button" class="btn btn-outline btn-small"
+                                id="btn-remove-avatar">Премахни</button>
+                        </div>
+                    </div>
+
+                    <script>
+                        // Само на тази страница:
+                        (function () {
+                            const fileInput = document.getElementById('id_avatar');
+                            const preview = document.getElementById('avatar-preview');
+                            const removeFld = document.getElementById('remove_avatar');
+
+                            document.getElementById('btn-change-avatar')?.addEventListener('click', () => {
+                                removeFld.value = '';            // ако преди това е натиснато "Премахни" – отменяме
+                                fileInput.click();
+                            });
+
+                            document.getElementById('btn-remove-avatar')?.addEventListener('click', () => {
+                                // отбелязваме за изтриване; визуално скриваме текущата снимка
+                                removeFld.value = '1';
+                                if (preview) preview.style.opacity = '0.4';
+                            });
+
+                            // по желание – показваме временен preview при избор на нов файл
+                            fileInput?.addEventListener('change', (e) => {
+                                removeFld.value = '';            // качването отменя "Премахни"
+                                const f = e.target.files && e.target.files[0];
+                                if (!f || !preview) return;
+                                const url = URL.createObjectURL(f);
+                                if (preview.tagName.toLowerCase() === 'img') {
+                                    preview.src = url;
+                                    preview.style.opacity = '1';
+                                } else {
+                                    // заместваме плейсхолдъра с img
+                                    const img = document.createElement('img');
+                                    img.className = 'avatar-square';
+                                    img.id = 'avatar-preview';
+                                    img.src = url;
+                                    preview.replaceWith(img);
+                                }
+                            });
+                        })();
+                    </script>
+
+                    <!-- 2) Име -->
+                    <div class="form-row">
+                        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                    </div>
+
+                    <!-- 3) Фамилия -->
+                    <div class="form-row">
+                        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+
+                    <!-- 4) Потребителско име -->
+                    <div class="form-row">
+                        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                        {{ form.username }}
+                    </div>
+
+                    <!-- 5) Имейл -->
+                    <div class="form-row">
+                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+
+                    <!-- 6) Смяна на парола -->
+                    <div class="form-row">
+                        <a class="btn btn-apply btn-small" href="{% url 'change_password' %}">Смяна на парола</a>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-apply btn-big"><strong>Запази промените</strong></button>
+                    </div>
+                </form>
+            </div>
+        </details>
+
+        <!-- 2) Отговори от Въпросника -->
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title"><strong>Отговори от Въпросника</strong></span>
+            </summary>
+            <div class="acc-body">
+                <form method="post" class="form-vertical">
+                    {% csrf_token %}
+                    <input type="hidden" name="form" value="questionnaire">
+
+                    {# Покажи полетата от q_form едно под друго #}
+                    {% for field in q_form %}
+                    <div class="form-row">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                        <div class="muted">{{ field.help_text }}</div>
+                        {% endif %}
+                        {% if field.errors %}
+                        <div class="muted">
+                            {% for e in field.errors %}{{ e }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+
+                    {% if q_form.non_field_errors %}
+                    <div class="muted">
+                        {% for e in q_form.non_field_errors %}{{ e }}<br>{% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-apply btn-big"><strong>Запази промените</strong></button>
+                    </div>
+                </form>
+            </div>
+        </details>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // редът на полето "friend_name"
+                const friendInput = document.getElementById('id_friend_name');
+                const friendRow = friendInput ? friendInput.closest('.form-row') : null;
+
+                // радио бутоните за "has_friend"
+                const radios = document.querySelectorAll('input[name="has_friend"]');
+
+                function toggleFriend() {
+                    if (!friendRow) return;
+                    const checked = document.querySelector('input[name="has_friend"]:checked');
+                    friendRow.style.display = (checked && checked.value === 'yes') ? '' : 'none';
+                }
+
+                radios.forEach(r => r.addEventListener('change', toggleFriend));
+                toggleFriend(); // първоначално скриване/показване
+            });
+        </script>
+
+        {# --- Събития, за които съм записана --- #}
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title"><strong>Събития, за които съм записана</strong></span>
+            </summary>
+            <div class="acc-body">
+                {% if approved_events %}
+                <div class="profile-events-grid">
+                    {% for e in approved_events %}
+                    <a class="event-card profile" href="{% url 'event_detail' e.id %}">
+                        {% if e.image and e.image.name %}
+                        <img src="{{ e.image.url }}" alt="{{ e.title }}">
+                        {% endif %}
+                        <h3 class="title">{{ e.title }}</h3>
+                        <div class="meta"><strong>Дата:</strong> {{ e.date_time|date:"d.m.Y H:i" }}</div>
+                        <div class="meta"><strong>Град:</strong> {{ e.city }}</div>
+                        <div class="meta">
+                            <strong>Цена:</strong>
+                            {{ e.price|floatformat:2 }} лв. ({{ e.price_eur }} €)
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="muted">Нямате предстоящи записани събития.</p>
+                {% endif %}
+            </div>
+        </details>
+
+        {# --- Минали събития --- #}
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title"><strong>Минали събития</strong></span></summary>
+            <div class="acc-body">
+                {% if past_events %}
+                <div class="profile-events-grid">
+                    {% for e in past_events %}
+                    <a class="event-card profile" href="{% url 'event_detail' e.id %}">
+                        {% if e.image and e.image.name %}
+                        <img src="{{ e.image.url }}" alt="{{ e.title }}">
+                        {% endif %}
+                        <h3 class="title">{{ e.title }}</h3>
+                        <div class="meta"><strong>Дата:</strong> {{ e.date_time|date:"d.m.Y H:i" }}</div>
+                        <div class="meta"><strong>Град:</strong> {{ e.city }}</div>
+                        <div class="meta">
+                            <strong>Цена:</strong>
+                            {{ e.price|floatformat:2 }} лв. ({{ e.price_eur }} €)
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="muted">Все още нямате минали събития, на които сте присъствали.</p>
+                {% endif %}
+            </div>
+        </details>
+
+
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title"><strong>Известия</strong></span></summary>
+            <div class="acc-body">
+                <form method="post" class="form-vertical">
+                    {% csrf_token %}
+                    <input type="hidden" name="form" value="notifications">
+
+                    <div class="form-row">
+                        <label>Имейл адрес</label>
+                        <div class="muted"><strong>{{ request.user.email }}</strong></div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_event_reminders.label }}</label>
+                        {{ notif_form.email_event_reminders }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_event_status_changes.label }}</label>
+                        {{ notif_form.email_event_status_changes }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_recommendations.label }}</label>
+                        {{ notif_form.email_recommendations }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_profile_changes.label }}</label>
+                        {{ notif_form.email_profile_changes }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_questionnaire_changes.label }}</label>
+                        {{ notif_form.email_questionnaire_changes }}
+                    </div>
+
+                    <div class="form-row">
+                        <label>{{ notif_form.email_news.label }}</label>
+                        {{ notif_form.email_news }}
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-apply btn-big"><strong>Запази промените</strong></button>
+                    </div>
+                </form>
+            </div>
+        </details>
+
+    </div>
+</section>
+{% endblock %}

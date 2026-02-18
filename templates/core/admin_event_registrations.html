@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin-registrations.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title center">Заявки за събития</h1>
+
+<section class="card">
+    <div class="accordion accordion--profile">
+
+        <!-- Чакащи -->
+        <details class="acc-item" open>
+            <summary class="acc-summary"><span class="acc-title">Чакащи заявки</span></summary>
+            <div class="acc-body">
+                <div class="table-wrap">
+                    <table class="ll-table">
+                        <thead>
+                            <tr>
+                                <th>Събитие</th>
+                                <th>Потребител</th>
+                                <th>Име</th>
+                                <th>Дете</th>
+                                <th>Дата</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in pending_regs %}
+                            <tr>
+                                <td>{{ reg.event.title }}</td>
+                                <td>{{ reg.user.username }}</td>
+                                <td>{{ reg.full_name }}</td>
+                                <td>{% if reg.child_name %}{{ reg.child_name }} ({{ reg.child_age }} г.)
+                                    {% else %}-{%endif %}</td>
+                                <td>{{ reg.created_at|date:"d.m.Y H:i" }}</td>
+                                <td class="ta-right">
+                                    <a class="btn-pill btn-approve"
+                                        href="{% url 'approve_registration' reg.id %}">Одобри</a>
+                                    <a class="btn-pill btn-reject"
+                                        href="{% url 'reject_registration'  reg.id %}">Отхвърли</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="muted ta-center">Няма чакащи заявки.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+
+        <!-- Одобрени -->
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title">Одобрени заявки</span></summary>
+            <div class="acc-body">
+                <div class="table-wrap">
+                    <table class="ll-table">
+                        <thead>
+                            <tr>
+                                <th>Събитие</th>
+                                <th>Потребител</th>
+                                <th>Име</th>
+                                <th>Дете</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in approved_regs %}
+                            <tr>
+                                <td>{{ reg.event.title }}</td>
+                                <td>{{ reg.user.username }}</td>
+                                <td>{{ reg.full_name }}</td>
+                                <td>{% if reg.child_name %}{{ reg.child_name }} ({{ reg.child_age }} г.){% else %}-
+                                    {%endif %}</td>
+                                <td>{{ reg.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="muted ta-center">Няма одобрени заявки.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+
+        <!-- Отхвърлени -->
+        <details class="acc-item">
+            <summary class="acc-summary"><span class="acc-title">Отхвърлени заявки</span></summary>
+            <div class="acc-body">
+                <div class="table-wrap">
+                    <table class="ll-table">
+                        <thead>
+                            <tr>
+                                <th>Събитие</th>
+                                <th>Потребител</th>
+                                <th>Име</th>
+                                <th>Дете</th>
+                                <th>Дата</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in rejected_regs %}
+                            <tr>
+                                <td>{{ reg.event.title }}</td>
+                                <td>{{ reg.user.username }}</td>
+                                <td>{{ reg.full_name }}</td>
+                                <td>{% if reg.child_name %}{{ reg.child_name }} ({{ reg.child_age }} г.){% else %}-
+                                    {%endif %}</td>
+                                <td>{{ reg.created_at|date:"d.m.Y H:i" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="muted ta-center">Няма отхвърлени заявки.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </details>
+
+    </div>
+</section>
+{% endblock %}

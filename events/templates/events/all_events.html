@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h2 class="events-title">Всички събития</h2>
+
+<form method="get" class="filter-form">
+    <div class="form-row">
+        <div class="form-group">
+            <label for="id_date">Дата</label>
+            {{ form.date }}
+        </div>
+        <div class="form-group">
+            <label for="id_city">Град</label>
+            {{ form.city }}
+        </div>
+        <div class="form-group">
+            <label for="id_interests">Интереси</label>
+            {{ form.interests }}
+        </div>
+        <div class="form-group">
+            <label for="id_kid_friendly">За деца</label>
+            {{ form.kid_friendly }}
+        </div>
+
+    </div>
+    <button type="submit" class="event-button">
+        Филтрирай
+    </button>
+
+    <a href="{% url 'all_events' %}" class="event-button">
+        Изчисти
+    </a>
+    </div>
+</form>
+
+
+<div class="event-grid">
+    {% for event in events %}
+    <a href="{% url 'event_detail' event.id %}" class="event-card">
+        {% if event.image and event.image.name %}
+        <img src="{{ event.image.url }}" alt="{{ event.title }}">
+        {% endif %}
+        <div class="event-info">
+            <h3>{{ event.title }}</h3>
+            <p><strong>Дата:</strong> {{ event.date_time|date:"d.m.Y H:i" }}</p>
+            <p><strong>Град:</strong> {{ event.city }}</p>
+            <p><strong>Цена:</strong> {{ event.price }} лв. ({{ event.price_eur }} €)</p>
+        </div>
+    </a>
+    {% empty %}
+    <p>Няма събития по зададените критерии.</p>
+    {% endfor %}
+</div>
+
+
+<a href="{% url 'events_home' %}" class="event-button" class="event-button">
+    ← Назад
+</a>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="bg">
+
+<body style="font-family: Arial, sans-serif; color:#222;">
+    <p>Здравей, <strong>{{ recipient_name }}</strong>!</p>
+    <p>Промените в настройките за имейл известия са запазени:</p>
+    <ul>
+        <li>Напомняния за събития: {{ prefs.email_event_reminders|yesno:"ДА,НЕ" }}</li>
+        <li>Одобрена/Отхвърлена заявка: {{ prefs.email_event_status_changes|yesno:"ДА,НЕ" }}</li>
+        <li>Препоръки за събития: {{ prefs.email_recommendations|yesno:"ДА,НЕ" }}</li>
+        <li>Промяна на лични данни: {{ prefs.email_profile_changes|yesno:"ДА,НЕ" }}</li>
+        <li>Промяна на отговори от въпросника: {{ prefs.email_questionnaire_changes|yesno:"ДА,НЕ" }}</li>
+        <li>Новини и предложения: {{ prefs.email_news|yesno:"ДА,НЕ" }}</li>
+    </ul>
+    <p>Поздрави,<br>LuxeLadies</p>
+</body>
+
+</html>

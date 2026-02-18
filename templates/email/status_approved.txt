@@ -1,0 +1,9 @@
+Здравей, {{ recipient_name }}!
+
+Заявката ти за събитието "{{ event.title }}" е ОДОБРЕНА.
+Кога: {{ event.date_time|date:"d.m.Y H:i" }}
+Град: {{ event.city }}{% if event.location_details %}
+/ Място: {{ event.location_details }}{% endif %}
+
+Очакваме те!
+Екипът на LuxeLadies

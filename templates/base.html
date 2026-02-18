@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bg">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>LuxeLadies</title>
+
+    <!-- Глобални стилове (съществуващият) -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Нови общи компоненти (акордеон/форми/бутони) -->
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+
+    <!-- Google шрифт (оставяме го) -->
+    <link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet">
+
+    <!-- ТУК страничните шаблони ще вкарват свои css -->
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <header>
+        <img src="{% static 'images/logo.png' %}" alt="Logo" class="logo">
+        <h1 class="site-title">LuxeLadies</h1>
+
+    </header>
+
+    <nav>
+        <ul class="nav-menu">
+            <li><a href="/">Начало</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'events_home' %}">Събития</a></li>
+            <li><a href="{% url 'my_profile' %}">Моят профил</a></li>
+            <li><a href="{% url 'logout' %}">Изход</a></li>
+            {% if user.is_superuser %}
+            <li><a href="{% url 'admin_panel' %}">Админ панел</a></li>
+            {% endif %}
+            {% else %}
+            <li><a href="{% url 'login' %}">Вход</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>

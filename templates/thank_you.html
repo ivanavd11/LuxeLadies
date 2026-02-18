@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="text-align: center; padding: 50px;">
+    <h2>Благодарим, че отговори на нашия въпросник! ❤️</h2>
+    <p style="margin-top: 20px;">
+        Скоро ще обработим информацията ти, за да може твоето изживяване в <strong>LuxeLadies</strong> да е
+        персонализирано и незабравимо!
+    </p>
+    <a href="{% url 'home' %}"
+        style="margin-top: 30px; display: inline-block; padding: 10px 20px; background-color: #e91e63; color: white; text-decoration: none; border-radius: 5px;">
+        Към началната страница
+    </a>
+</div>
+{% endblock %}

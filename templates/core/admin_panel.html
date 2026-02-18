@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title center">Административен панел</h1>
+
+<!-- Чакащи потребители -->
+<section class="card card--softpink">
+    <h2 class="section-title">Чакащи потребители</h2>
+
+    {% if pending_users %}
+    <div class="accordion">
+        {% for u in pending_users %}
+        <details class="acc-item user approved">
+            <summary>
+                <span>
+                    {{ u.get_full_name|default:u.username }}
+                    <span class="muted">({{ u.username }})</span>
+                </span>
+                <span class="muted ml-auto">• {{ u.email }}</span>
+            </summary>
+            <div class="acc-body">
+                <ul class="user-info">
+                    <li><b>Потребителско име:</b> {{ u.username }}</li>
+                    <li><b>Имейл:</b> {{ u.email }}</li>
+                    <li><b>Възраст:</b> {{ u.age|default:"—" }}</li>
+                    <li><b>Град:</b> {{ u.city|default:"—" }}</li>
+                    <li><b>Учи:</b> {{ u.studies|yesno:"Да,Не" }}</li>
+                    {% if u.studies %}
+                    <li><b>Учебно заведение:</b> {{ u.education_place|default:"—" }}</li>
+                    {% endif %}
+                    <li><b>Работи:</b> {{ u.works|yesno:"Да,Не" }}</li>
+                    {% if u.works %}
+                    <li><b>Месторабота:</b> {{ u.work_place|default:"—" }}</li>
+                    {% endif %}
+                    {% if u.about %}
+                    <li><b>За потребителя:</b> {{ u.about }}</li>
+                    {% endif %}
+                    <li><b>Регистриран:</b> {{ u.date_joined|date:"d.m.Y H:i" }}</li>
+                </ul>
+            </div>
+            <div class="row-actions">
+                <a class="btn btn-approve" href="{% url 'approve_user' u.id %}">Одобри</a>
+                <a class="btn btn-danger" href="{% url 'reject_user'  u.id %}">Отхвърли</a>
+            </div>
+
+        </details>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">Няма чакащи потребители.</p>
+    {% endif %}
+</section>
+
+<!-- Управление на събития -->
+<section class="card card--softpink">
+    <h2 class="section-title">Управление на събития</h2>
+
+    <a class="btn btn-pill" href="{% url 'admin_event_registrations' %}">Заявки за събития</a>
+
+    <div class="badges">
+        <span class="badge badge--pending">Чакащи: {{ event_regs_pending }}</span>
+        <span class="badge badge--approved">Одобрени: {{ event_regs_approved }}</span>
+        <span class="badge badge--rejected">Отхвърлени: {{ event_regs_rejected }}</span>
+    </div>
+</section>
+
+<!-- Одобрени потребители -->
+<section class="card card--softpink">
+    <h2 class="section-title">Одобрени потребители</h2>
+
+    <form method="get" class="filters">
+        <input type="text" name="search" placeholder="Търси по име/потребител/имейл/град" value="{{ search_query }}"
+            class="input">
+
+        <select name="sort" class="select">
+            <option value="">-- Сортирай по --</option>
+            <option value="username_asc" {{ selected_options.username_asc }}>Потребител (A→Z)</option>
+            <option value="username_desc" {{ selected_options.username_desc }}>Потребител (Z→A)</option>
+            <option value="age_asc" {{ selected_options.age_asc }}>Възраст (↑)</option>
+            <option value="age_desc" {{ selected_options.age_desc }}>Възраст (↓)</option>
+            <option value="newest" {{ selected_options.newest }}>Най-нови</option>
+            <option value="oldest" {{ selected_options.oldest }}>Най-стари</option>
+        </select>
+
+        <!-- тoва бута бутона в ДЕСНИЯ край -->
+        <span class="flex-spacer"></span>
+        <button class="btn btn-apply" type="submit">Приложи</button>
+    </form>
+
+    {% if approved_users %}
+    <div class="accordion">
+        {% for u in approved_users %}
+        <details class="acc-item user approved">
+            <summary>
+                <span>
+                    {{ u.get_full_name|default:u.username }}
+                    <span class="muted">({{ u.username }})</span>
+                </span>
+                <span class="muted ml-auto">• {{ u.email }}</span>
+            </summary>
+
+            <div class="acc-body">
+                <ul class="user-info">
+                    <li><b>Потребителско име:</b> {{ u.username }}</li>
+                    <li><b>Имейл:</b> {{ u.email }}</li>
+                    <li><b>Възраст:</b> {{ u.age|default:"—" }}</li>
+                    <li><b>Град:</b> {{ u.city|default:"—" }}</li>
+                    <li><b>Учи:</b> {{ u.studies|yesno:"Да,Не" }}</li>
+                    {% if u.studies %}
+                    <li><b>Учебно заведение:</b> {{ u.education_place|default:"—" }}</li>
+                    {% endif %}
+                    <li><b>Работи:</b> {{ u.works|yesno:"Да,Не" }}</li>
+                    {% if u.works %}
+                    <li><b>Месторабота:</b> {{ u.work_place|default:"—" }}</li>
+                    {% endif %}
+                    {% if u.about %}
+                    <li><b>За потребителя:</b> {{ u.about }}</li>
+                    {% endif %}
+                    <li><b>Регистриран:</b> {{ u.date_joined|date:"d.m.Y H:i" }}</li>
+                </ul>
+
+                <div class="row-actions">
+                    <a class="btn btn-outline" href="{% url 'delete_user' u.id %}">Изтрий</a>
+                </div>
+            </div>
+        </details>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">Няма одобрени потребители.</p>
+    {% endif %}
+</section>
+{% endblock %}
